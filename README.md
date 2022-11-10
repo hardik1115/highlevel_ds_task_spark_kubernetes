@@ -6,7 +6,7 @@ The files are as follows;
 2. Script to read, clean, process and model on the housing data.
 3. Cluster source and configs; https://drive.google.com/file/d/1vT0uX8AiPSTQiYhlK5M5wylqrwhVkZoD/view?usp=sharing
 
-The set-up is as follows: Spark is set up on Kubernetes running with Docker Engine. A job is submitted using the command snippet below, it spins up worker pods as 'n' spark.executor.instances or nodes in a cluster mode, 'spark:spark-docker' is the image used to spin up these worker instances. The dependencies and scripts as in the zipped cluster source.
+The set-up is as follows: Spark is set up on Kubernetes running with Docker Engine. A job is submitted using the command snippet below, it spins up worker pods as 'n' spark.executor.instances or nodes in a cluster mode, 'spark:spark-docker' is the image from the Dockerfile used to spin up these worker instances. The dependencies and scripts as in the zipped cluster source.
 
 Used mlflow to log and track training and validation metrics, training time, r2, mse.  
 
