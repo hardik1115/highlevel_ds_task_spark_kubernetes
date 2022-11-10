@@ -16,3 +16,22 @@ To submit a job, run:
 
 bin/spark-submit  --master k8s://https://localhost:6443 --deploy-mode cluster --conf spark.executor.instances=1      --conf spark.kubernetes.authenticate.driver.serviceAccountName=spark      --conf spark.kubernetes.container.image=spark:spark-docker --name spark-pi --driver-memory 1g --executor-memory 2g --executor-cores 2 local:///opt/spark/examples/src/main/python/test_script_pyspark.py
 
+Quick summary of results: 
+
+1 executor: 
+
+MAE: 12721.646279
+r2: 0.986808
+Training time: 69.5273814201355s
+
+2 Executors: 
+
+MAE: 12721.646279
+r2: 0.986808
+Training time: 38.384032249450684s
+
+4 Executors:
+
+MAE: 12721.646279
+r2: 0.986808
+Training time: 35.335444688797s
