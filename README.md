@@ -18,20 +18,29 @@ bin/spark-submit  --master k8s://https://localhost:6443 --deploy-mode cluster --
 
 Quick summary of results: 
 
-1 executor: 
+1 Executor:
 
-MAE: 12721.646279
-r2: 0.986808
-Training time: 69.5273814201355s
+Validation Data results:
+MSE on val data = 2.90107e+08
+r2 on val data = 0.987202
 
-2 Executors: 
+Training time: 38.240039348602295s
 
-MAE: 12721.646279
-r2: 0.986808
-Training time: 38.384032249450684s
+
+2 Executors:
+
+Validation Data results:
+MSE on val data = 2.94034e+08
+r2 on val data = 0.987173
+
+Training time: 33.310808420181274s
+
 
 4 Executors:
 
-MAE: 12721.646279
-r2: 0.986808
-Training time: 35.335444688797s
+Validation Data results:
+
+MSE on val data = 2.9148e+08
+r2 on val data = 0.987215
+
+Training time: 31.99020457267761s
