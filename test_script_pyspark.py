@@ -84,7 +84,7 @@ def train_val_model(df, model_instance, test_proportion):
 
 if __name__ == "__main__":
 
-    spark = SparkSession.builder.master("local[1]").appName("SparkByExamples.com").getOrCreate()
+    spark = SparkSession.builder.master("local[1]").appName("LinearReg_Housing_Task").getOrCreate()
 
     df = spark.read.options(mode="DROPMALFORMED", header= True).csv('../data/mllib/Training Set.csv')
     test_df = spark.read.options(mode="DROPMALFORMED", header= True).csv('../data/mllib/Testing Set Without Value.csv')
