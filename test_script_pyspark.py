@@ -7,6 +7,9 @@ import pickle
 from random import random
 from operator import add
 
+import mlflow
+from mlflow import MlflowClient
+
 from pyspark.ml.regression import LinearRegression
 from pyspark.ml.feature import VectorAssembler, StringIndexer
 from pyspark.sql import SparkSession
@@ -52,6 +55,13 @@ def prep_data(df):
 
     return v_df
 
+def fetch_logged_data(run_id):
+    client = MlflowClient()
+    data = client.get_run(run_id).data
+    tags = {k: v for k, v in data.tags.items() if not k.startswith("mlflow.")}
+    artifacts = [f.path for f in client.list_artifacts(run_id, "model")]
+    return data.params, data.metrics, tags, artifacts
+
 def train_val_model(df, model_instance, test_proportion):
     '''
     Train and validate the model and print the results.
@@ -61,11 +71,12 @@ def train_val_model(df, model_instance, test_proportion):
     train_df = splits[0]
     val_df = splits[1]
 
-    start = time.time()
-    lrModel = model_instance.fit(train_df)
-    stop = time.time()
+    with mlflow.start_run() as run:
+        start = time.time()
+        lrModel = model_instance.fit(train_df)
+        stop = time.time()
 
-
+    params, metrics, tags, artifacts = fetch_logged_data(run.info.run_id)
     
     val_result = lrModel.evaluate(val_df)
     trainingSummary = lrModel.summary
@@ -80,11 +91,15 @@ def train_val_model(df, model_instance, test_proportion):
     time_taken = stop - start
     print(f"Training time: {time_taken}s")
 
+    print(f"Logged Metrics: {metrics}")
+
     return lrModel
 
 if __name__ == "__main__":
 
-    spark = SparkSession.builder.master("local[1]").appName("LinearReg_Housing_Task").getOrCreate()
+    mlflow.pyspark.ml.autolog()
+
+    spark = SparkSession.builder.master("local[1]").appName("LinearReg_HousingPrices").getOrCreate()
 
     df = spark.read.options(mode="DROPMALFORMED", header= True).csv('../data/mllib/Training Set.csv')
     test_df = spark.read.options(mode="DROPMALFORMED", header= True).csv('../data/mllib/Testing Set Without Value.csv')
